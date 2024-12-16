@@ -12,8 +12,6 @@ module Incrudable
 
     after_action :verify_authorized, unless: :skip_authorization?
     after_action :verify_policy_scoped, unless: :skip_policy_scope?
-
-    rescue_from ActiveRecord::RecordNotFound, with: :rescue_record_not_found
   end
 
   def index; end
@@ -100,11 +98,6 @@ module Incrudable
   def set_new_record
     set_instance_variable(resource_name, resource.new(record_params))
     authorize record
-  end
-
-  def rescue_record_not_found
-    flash[:alert] = t('.not_found', default: 'Record not found.')
-    redirect_back fallback_location: root_path
   end
 
   def handle_html_response(success, template, path)
