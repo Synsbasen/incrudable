@@ -78,7 +78,7 @@ module Incrudable
   end
 
   def resource_name
-    resource.to_s.demodulize.underscore
+    resource.name.underscore.pluralize.tr('/', '_')
   end
 
   def record
