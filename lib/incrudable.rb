@@ -89,6 +89,8 @@ module Incrudable
     set_instance_variable(resource_name, policy_scope(resource).find_by!(record_param_identifier => params[record_param_identifier]))
     authorize record
   end
+
+  
   
   def set_records
     set_instance_variable(resource_name.pluralize, policy_scope(resource))
@@ -96,7 +98,7 @@ module Incrudable
   end
   
   def set_new_record
-    set_instance_variable(resource_name, resource.new(record_params))
+    set_instance_variable("@#{resource_name}", resource.new(record_params))
     authorize record
   end
 
