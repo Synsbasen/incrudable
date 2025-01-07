@@ -100,7 +100,7 @@ module Incrudable
   end
   
   def set_new_record
-    set_instance_variable(resource_name, resource.new(new_record_default_attributes.merge(new_record_defaults)))
+    set_instance_variable(resource_name, resource.new(new_record_defaults.merge(record_params)))
     authorize record
   end
 
