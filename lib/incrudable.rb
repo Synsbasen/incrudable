@@ -48,7 +48,11 @@ module Incrudable
   end
 
   def record_params
-    params.require(resource_name).permit(permitted_params)
+    params.fetch(resource_name, {}).permit(permitted_params)
+  end
+
+  def new_record_default_attributes
+    {}
   end
 
   def after_destroy_path
@@ -60,7 +64,7 @@ module Incrudable
   end
 
   def skip_policy_scope?
-    false
+    %w[new create].include?(action_name)
   end
 
   def record_param_identifier
@@ -90,15 +94,13 @@ module Incrudable
     authorize record
   end
 
-  
-  
   def set_records
     set_instance_variable(resource_name.pluralize, policy_scope(resource))
     authorize instance_variable_get("@#{resource_name.pluralize}")
   end
   
   def set_new_record
-    set_instance_variable("@#{resource_name}", resource.new(record_params))
+    set_instance_variable(resource_name, resource.new(record_params.merge(new_record_default_attributes)))
     authorize record
   end
 
