@@ -51,7 +51,7 @@ module Incrudable
     params.fetch(resource_name, {}).permit(permitted_params)
   end
 
-  def new_record_default_attributes
+  def new_record_defaults
     {}
   end
 
@@ -100,7 +100,7 @@ module Incrudable
   end
   
   def set_new_record
-    set_instance_variable(resource_name, resource.new(record_params.merge(new_record_default_attributes)))
+    set_instance_variable(resource_name, resource.new(new_record_default_attributes.merge(new_record_defaults)))
     authorize record
   end
 
