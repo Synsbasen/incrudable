@@ -108,7 +108,7 @@ module Incrudable
     if success
       flash[:success] = t(".success", default: "Successfully completed.")
 
-      if respond_to?(path)
+      if respond_to?(path, true) && send(path).present?
         redirect_to send(path)
       else
         redirect_back fallback_location: root_path
