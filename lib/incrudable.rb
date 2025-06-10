@@ -19,7 +19,7 @@ module Incrudable
   def new; end
   def edit; end
 
-  def create  
+  def create
     respond_to do |format|
       format.html { handle_html_response(record.save, :new, :after_create_path) }
       format.json { handle_json_response(record.save) }
@@ -34,11 +34,10 @@ module Incrudable
   end
 
   def destroy
-    if record.destroy
-      flash[:success] = t('.success', default: 'Successfully deleted.')
+    respond_to do |format|
+      format.html { handle_html_response(record.destroy, :index, :after_destroy_path) }
+      format.json { handle_json_response(record.destroy) }
     end
-
-    redirect_to after_destroy_path
   end
 
   private
@@ -88,7 +87,7 @@ module Incrudable
   def set_instance_variable(name, value)
     instance_variable_set("@#{name}", value)
   end
-  
+
   def set_record
     set_instance_variable(resource_name, policy_scope(resource).find_by!(record_param_identifier => params[record_param_identifier]))
     authorize record
@@ -98,7 +97,7 @@ module Incrudable
     set_instance_variable(resource_name.pluralize, policy_scope(resource))
     authorize instance_variable_get("@#{resource_name.pluralize}")
   end
-  
+
   def set_new_record
     set_instance_variable(resource_name, resource.new(new_record_defaults.merge(record_params)))
     authorize record
@@ -118,7 +117,7 @@ module Incrudable
       render template
     end
   end
-  
+
   def handle_json_response(success)
     if success
       render json: { success: true, record: record }
@@ -127,4 +126,3 @@ module Incrudable
     end
   end
 end
-
