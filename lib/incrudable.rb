@@ -14,8 +14,19 @@ module Incrudable
     after_action :verify_policy_scoped, unless: :skip_policy_scope?
   end
 
-  def index; end
-  def show; end
+  def index
+    respond_to do |format|
+      format.html
+      format.json { render json: instance_variable_get("@#{resource_name.pluralize}") }
+    end
+  end
+
+  def show
+    respond_to do |format|
+      format.html
+      format.json { render json: record }
+    end
+  end
   def new; end
   def edit; end
 
