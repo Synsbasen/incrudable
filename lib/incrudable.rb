@@ -17,7 +17,7 @@ module Incrudable
   def index
     respond_to do |format|
       format.html
-      format.json { render json: instance_variable_get("@#{resource_name.pluralize}") }
+      format.json { render json: records }
     end
   end
 
@@ -93,6 +93,10 @@ module Incrudable
 
   def record
     instance_variable_get("@#{resource_name}")
+  end
+
+  def records
+    instance_variable_get("@#{resource_name.pluralize}")
   end
 
   def set_instance_variable(name, value)
